@@ -5,4 +5,4 @@ set -e
 mkdir -p bin
 
 # Compile main.go into an executable inside bin/
-go build -o bin/interpreter main.go
+go build -o bin/interpreter .
