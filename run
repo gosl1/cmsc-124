@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+binary="./bin/interpreter"
+
+# Detect Windows executable suffix (.exe)
+if [[ -f "$binary.exe" ]]; then
+  binary="$binary.exe"
+fi
+
+# Execute binary and pass all incoming command line arguments
+exec "$binary" "$@"
