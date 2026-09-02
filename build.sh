@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# build.sh
 set -e
-mkdir -p build
-go build -o build/interpreter ./cmd/interpreter
+
+# Create bin output directory
+mkdir -p bin
+
+# Compile main.go into an executable inside bin/
+go build -o bin/interpreter .

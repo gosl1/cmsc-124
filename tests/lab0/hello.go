@@ -1,1 +1,6 @@
-pibbles are awsesome!!!
+package main
+import "fmt"
+
+func main(){
+	fmt.Println("Hello World")
+}

@@ -1,3 +1,3 @@
-module cmsc-124-lab0
+module your-interpreter
 
 go 1.26.7
