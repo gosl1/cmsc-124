@@ -3,12 +3,13 @@
 ## Creators
 
 - Ethan Sean T. Gapulan (Ethanerz)
-- Marc Raven A. Sian (Gosl1)
+- Marc Raven A. Sian (gosl1)
 
 ## Overview
 
-[One paragraph: what the language is for, who would use it, what writing it
-feels like.]
+Go is a high-level statically typed language. It was created by google engineers to elimenate complexity and slow build times.
+Go is part of the C family of programming languages so it has similar syntax to other languages like C and C++ and shares with them the feature of garbage collection.
+Go has runtime support for cocurrency in response to the rise in multicore systems.
 
 ## Host language and build
 
@@ -81,10 +82,10 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 
 ## Whitespace and termination
 
-- Whitespace significant: [yes or no, and where]
-- Statement terminator: [e.g. semicolon, newline, none]
-- Block delimiters: [e.g. braces, indentation]
-- Grouping delimiters: [e.g. parentheses]
+- Whitespace significant: No
+- Statement terminator: newline
+- Block delimiters: Braces
+- Grouping delimiters: Parentheses
 
 ## Token output format
 

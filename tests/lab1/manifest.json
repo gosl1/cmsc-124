@@ -1,0 +1,5 @@
+{
+  "ext": ".go",
+  "flag": "--tokenize",
+  "mode": "sidecar"
+}
