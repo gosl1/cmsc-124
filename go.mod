@@ -1,3 +1,3 @@
-module your-interpreter
+module GoPenguin-Interpreter
 
 go 1.26.7
