@@ -1,4 +1,4 @@
-# Go
+# Amadeus
 
 ## Creators
 
@@ -7,16 +7,13 @@
 
 ## Overview
 
-Go is a high-level statically typed language. It was created by google engineers to elimenate complexity and slow build times.
-Go is part of the C family of programming languages so it has similar syntax to other languages like C and C++ and shares with them the feature of garbage collection.
-Go has runtime support for cocurrency in response to the rise in multicore systems.
+Amadeus is a dynamically typed language styled after the concepts found in the anime "Steins;Gate".
 
 ## Host language and build
 
 - Host language: go 1.26.7
 - Version metadata: go.mod
 - Build: `./build.sh`
-- [Anything a fresh clone needs to know.]
 
 ## Running it
 
@@ -30,11 +27,11 @@ Go has runtime support for cocurrency in response to the rise in multicore syste
 | `./run` | [Starts the REPL.] |
 
 
-Exit codes: 0 [when], 65 [when], 70 [when].
+Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ## File extension
 
-`[.go]` 
+`[.sg]` 
 
 ## Lexical structure
 
