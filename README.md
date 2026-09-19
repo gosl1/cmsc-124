@@ -7,7 +7,7 @@
 
 ## Overview
 
-Amadeus is a dynamically typed language styled after the concepts found in the anime "Steins;Gate".
+Amadeus is a dynamically typed, general-purpose scripting language inspired by the visual novel and anime franchise Steins;Gate, built specifically to have execution-history awareness. Amadeus natively treats the program's running execution path as an immutable, queryable "worldline." Rather than relying strictly on current variable states, developers can native-query the runtime history using custom syntax inspired by Steins;Gate to dynamically reroute logic based on what statements were executed and in what exact order.
 
 ## Host language and build
 
@@ -31,7 +31,7 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ## File extension
 
-`[.sg]` 
+`[.ama]` 
 
 ## Lexical structure
 
