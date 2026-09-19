@@ -35,31 +35,53 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ## Lexical structure
 
-### Keywords
 
+### Keywords
 
 | Keyword | Purpose |
 |---|---|
-| [word] | [what it does] |
-
+| [TBD] | variable declaration |
+| [TBD] | print/output statement |
+| [TBD] | if |
+| [TBD] | else |
+| [TBD] | while |
+| [TBD] | boolean literal — true |
+| [TBD] | boolean literal — false |
+| [TBD] | nil / absence-of-value literal |
+| [TBD] | function declaration |
+| [TBD] | return statement |
+| [TBD] | expose the execution-history record as a value (returns the log) |
 
 ### Operators
 
 
 | Operator | Category | Operands | Associativity | Precedence |
 |---|---|---|---|---|
-| [op] | [arithmetic, comparison, logical, assignment, other] | [unary or binary] | [left, right, none] | [1 = loosest] |
-
+| `+` | arithmetic | binary | left | [TBD — set in Lab 2] |
+| `-` | arithmetic | binary | left | [TBD] |
+| `*` | arithmetic | binary | left | [TBD] |
+| `/` | arithmetic | binary | left | [TBD] |
+| `%` | arithmetic (modulo) | binary | left | [TBD] |
+| `=` | assignment | binary | right | [TBD] |
+| `==` | comparison | binary | left | [TBD] |
+| `!=` | comparison | binary | left | [TBD] |
+| `<` | comparison | binary | left | [TBD] |
+| `<=` | comparison | binary | left | [TBD] |
+| `>` | comparison | binary | left | [TBD] |
+| `>=` | comparison | binary | left | [TBD] |
+| `!` | logical (not) | unary | right | [TBD] |
+| `[` `]` | indexing (array/log access) | binary | left | [TBD] |
+| `.` | field access | binary | left | [TBD] |
 
 ### Literals
 
 
 | Kind | Syntax | Produces |
 |---|---|---|
-| [number] | [e.g. 42, 3.14] | [what runtime value] |
-| [string] | [e.g. "hello", escapes supported] | [what runtime value] |
-| [boolean] | [true, false] | [what runtime value] |
-| [nil] | [spelling] | [what runtime value] |
+| number | `4`, `4.0` (integers and decimals; no leading-dot numbers, e.g. `.5` is invalid; a trailing dot with no following digit is its own token, so `3.toString` scans as NUMBER, DOT, IDENTIFIER) | numeric value |
+| string | `"hello"`, double-quoted, single-line only (no multi-line strings); supports `\n`, `\"`, `\\` escape sequences | string value (decoded — lexeme keeps the raw escaped text, literal holds the decoded characters) |
+| boolean | [TBD keyword] / [TBD keyword] | boolean value |
+| nil | [TBD keyword] | absence-of-value |
 
 
 ### Identifiers
@@ -71,11 +93,11 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ### Comments
 
-- Line comments: [token]
-- Block comments: [tokens, or "not supported"]
-- Nesting: [supported or not]
-- [Harness note: comment_prefix in tests/lab*/manifest.json is set to the
-  token above.]
+- Line comments: `//`, discarded and not counted, runs to end of line
+- Block comments: not supported (documented decision — revisit only if the
+  language later needs to annotate nested structure worth commenting on)
+- Nesting: n/a
+- Harness note: `comment_prefix` in `tests/lab*/manifest.json` is set to `//`
 
 ## Whitespace and termination
 
@@ -92,6 +114,8 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 [What each field means. Frozen as of Lab 1; changes are recorded in the
 changelog.]
+
+
 
 ## Grammar
 
