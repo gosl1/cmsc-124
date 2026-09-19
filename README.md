@@ -7,7 +7,7 @@
 
 ## Overview
 
-Amadeus is a dynamically typed language styled after the concepts found in the anime "Steins;Gate".
+Amadeus is a dynamically typed, general-purpose scripting language inspired by the visual novel and anime franchise Steins;Gate, built specifically to have execution-history awareness. Amadeus natively treats the program's running execution path as an immutable, queryable "worldline." Rather than relying strictly on current variable states, developers can native-query the runtime history using custom syntax inspired by Steins;Gate to dynamically reroute logic based on what statements were executed and in what exact order.
 
 ## Host language and build
 
@@ -31,35 +31,57 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ## File extension
 
-`[.sg]` 
+`[.ama]` 
 
 ## Lexical structure
 
-### Keywords
 
+### Keywords
 
 | Keyword | Purpose |
 |---|---|
-| [word] | [what it does] |
-
+| [TBD] | variable declaration |
+| [TBD] | print/output statement |
+| [TBD] | if |
+| [TBD] | else |
+| [TBD] | while |
+| [TBD] | boolean literal — true |
+| [TBD] | boolean literal — false |
+| [TBD] | nil / absence-of-value literal |
+| [TBD] | function declaration |
+| [TBD] | return statement |
+| [TBD] | expose the execution-history record as a value (returns the log) |
 
 ### Operators
 
 
 | Operator | Category | Operands | Associativity | Precedence |
 |---|---|---|---|---|
-| [op] | [arithmetic, comparison, logical, assignment, other] | [unary or binary] | [left, right, none] | [1 = loosest] |
-
+| `+` | arithmetic | binary | left | [TBD — set in Lab 2] |
+| `-` | arithmetic | binary | left | [TBD] |
+| `*` | arithmetic | binary | left | [TBD] |
+| `/` | arithmetic | binary | left | [TBD] |
+| `%` | arithmetic (modulo) | binary | left | [TBD] |
+| `=` | assignment | binary | right | [TBD] |
+| `==` | comparison | binary | left | [TBD] |
+| `!=` | comparison | binary | left | [TBD] |
+| `<` | comparison | binary | left | [TBD] |
+| `<=` | comparison | binary | left | [TBD] |
+| `>` | comparison | binary | left | [TBD] |
+| `>=` | comparison | binary | left | [TBD] |
+| `!` | logical (not) | unary | right | [TBD] |
+| `[` `]` | indexing (array/log access) | binary | left | [TBD] |
+| `.` | field access | binary | left | [TBD] |
 
 ### Literals
 
 
 | Kind | Syntax | Produces |
 |---|---|---|
-| [number] | [e.g. 42, 3.14] | [what runtime value] |
-| [string] | [e.g. "hello", escapes supported] | [what runtime value] |
-| [boolean] | [true, false] | [what runtime value] |
-| [nil] | [spelling] | [what runtime value] |
+| number | `4`, `4.0` (integers and decimals; no leading-dot numbers, e.g. `.5` is invalid; a trailing dot with no following digit is its own token, so `3.toString` scans as NUMBER, DOT, IDENTIFIER) | numeric value |
+| string | `"hello"`, double-quoted, single-line only (no multi-line strings); supports `\n`, `\"`, `\\` escape sequences | string value (decoded — lexeme keeps the raw escaped text, literal holds the decoded characters) |
+| boolean | [TBD keyword] / [TBD keyword] | boolean value |
+| nil | [TBD keyword] | absence-of-value |
 
 
 ### Identifiers
@@ -71,27 +93,37 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ### Comments
 
-- Line comments: [token]
-- Block comments: [tokens, or "not supported"]
-- Nesting: [supported or not]
-- [Harness note: comment_prefix in tests/lab*/manifest.json is set to the
-  token above.]
+- Line comments: `//`, discarded and not counted, runs to end of line
+- Block comments: not supported (documented decision — revisit only if the
+  language later needs to annotate nested structure worth commenting on)
+- Nesting: n/a
+- Harness note: `comment_prefix` in `tests/lab*/manifest.json` is set to `//`
 
 ## Whitespace and termination
 
-- Whitespace significant: No
-- Statement terminator: newline
-- Block delimiters: Braces
-- Grouping delimiters: Parentheses
+- Whitespace significant: no — spaces, tabs, and carriage returns are
+  discarded and not counted as tokens
+- Statement terminator: newline (no semicolons)
+- Block delimiters: braces `{ }`
+- Grouping delimiters: parentheses `( )`
+- Newlines are discarded but increment the line counter exactly once, at the
+  point the newline character is consumed, so line numbers stay accurate
+  even once multi-line constructs (strings, comments) are added later
 
 ## Token output format
 
 ```
-[one line of real --tokenize output]
+[TBD format name](type=[TBD], lexeme=[TBD], literal=[TBD], line=1)
 ```
 
-[What each field means. Frozen as of Lab 1; changes are recorded in the
-changelog.]
+Fields, left to right: token type (category, e.g. NUMBER), the lexeme (raw
+source text), the literal value (decoded/typed value, or absent for
+non-literal tokens), and the 1-indexed line number the token started on.
+One token per line, EOF included as the final token of every stream. Format
+must be frozen before the first `.expected` file is committed — see
+changelog if it changes later.
+
+
 
 ## Grammar
 
@@ -161,19 +193,24 @@ true.]
 
 ## Errors and diagnostics
 
-Message format:
+Message format (draft, refine once real examples exist):
 
 ```
-[one real static error]
-[one real runtime error]
+[TBD prefix] Unexpected character '$' at line 12
+[TBD prefix] String has no closing quote, starting at line 7
 ```
 
+Both are reported on stderr; scanning continues afterward so multiple
+problems in one file are all reported; the file exits 65 once scanning
+finishes. Nothing about a rejected file is printed to stdout. A clean scan
+exits 0.
 
 | Failure | Exit code |
 |---|---|
-| [lexical error] | 65 |
-| [syntax error] | 65 |
-| [runtime error] | 70 |
+| Unterminated string literal | 65 |
+| Character that can't begin any lexeme | 65 |
+| [Third rejection case — TBD once decided per assignment requirement] | 65 |
+
 
 
 ## Testing conventions
@@ -214,18 +251,24 @@ Output:
 
 ## Design rationale
 
-[Why the language is the way it is. Cover the choices that surprised you, the
-features you cut, and the decisions you reversed. Specific reasons, not
-approval of your own work.]
+- Dynamically typed by requirement; no type-checking occurs at scan time.
+- History-awareness (recording branch/loop/call outcomes and exposing them
+  as a queryable value) was chosen over a purely thematic keyword layer
+  after establishing that renamed control-flow keywords alone (e.g. an
+  `if`/`else` pair under different names) would be functionally identical
+  to ordinary conditionals and not a real language feature. This after all,
+  is the choice of Steins;Gate.
+- [keyword choices yet to be done]
 
 ## Known limitations
 
-- [What doesn't work, what is unimplemented, where behavior is worse than you
-  would like.]
+- No block comments; no multi-line strings.
+- History-log growth is currently unbounded within a scope — no cap or
+  clear mechanism decided yet.
 
 ## Changelog
 
 
 | Activity | What changed in the language |
 |---|---|
-| Lab 1 | [entry] |
+| Lab 1 | Initial lexical structure, run contract, dynamically-typed requirement, and history-awareness design direction established. Keyword names left open. |
