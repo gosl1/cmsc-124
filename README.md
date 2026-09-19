@@ -101,19 +101,27 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 ## Whitespace and termination
 
-- Whitespace significant: No
-- Statement terminator: newline
-- Block delimiters: Braces
-- Grouping delimiters: Parentheses
+- Whitespace significant: no — spaces, tabs, and carriage returns are
+  discarded and not counted as tokens
+- Statement terminator: newline (no semicolons)
+- Block delimiters: braces `{ }`
+- Grouping delimiters: parentheses `( )`
+- Newlines are discarded but increment the line counter exactly once, at the
+  point the newline character is consumed, so line numbers stay accurate
+  even once multi-line constructs (strings, comments) are added later
 
 ## Token output format
 
 ```
-[one line of real --tokenize output]
+[TBD format name](type=[TBD], lexeme=[TBD], literal=[TBD], line=1)
 ```
 
-[What each field means. Frozen as of Lab 1; changes are recorded in the
-changelog.]
+Fields, left to right: token type (category, e.g. NUMBER), the lexeme (raw
+source text), the literal value (decoded/typed value, or absent for
+non-literal tokens), and the 1-indexed line number the token started on.
+One token per line, EOF included as the final token of every stream. Format
+must be frozen before the first `.expected` file is committed — see
+changelog if it changes later.
 
 
 
@@ -185,19 +193,24 @@ true.]
 
 ## Errors and diagnostics
 
-Message format:
+Message format (draft, refine once real examples exist):
 
 ```
-[one real static error]
-[one real runtime error]
+[TBD prefix] Unexpected character '$' at line 12
+[TBD prefix] String has no closing quote, starting at line 7
 ```
 
+Both are reported on stderr; scanning continues afterward so multiple
+problems in one file are all reported; the file exits 65 once scanning
+finishes. Nothing about a rejected file is printed to stdout. A clean scan
+exits 0.
 
 | Failure | Exit code |
 |---|---|
-| [lexical error] | 65 |
-| [syntax error] | 65 |
-| [runtime error] | 70 |
+| Unterminated string literal | 65 |
+| Character that can't begin any lexeme | 65 |
+| [Third rejection case — TBD once decided per assignment requirement] | 65 |
+
 
 
 ## Testing conventions
@@ -238,18 +251,24 @@ Output:
 
 ## Design rationale
 
-[Why the language is the way it is. Cover the choices that surprised you, the
-features you cut, and the decisions you reversed. Specific reasons, not
-approval of your own work.]
+- Dynamically typed by requirement; no type-checking occurs at scan time.
+- History-awareness (recording branch/loop/call outcomes and exposing them
+  as a queryable value) was chosen over a purely thematic keyword layer
+  after establishing that renamed control-flow keywords alone (e.g. an
+  `if`/`else` pair under different names) would be functionally identical
+  to ordinary conditionals and not a real language feature. This after all,
+  is the choice of Steins;Gate.
+- [keyword choices yet to be done]
 
 ## Known limitations
 
-- [What doesn't work, what is unimplemented, where behavior is worse than you
-  would like.]
+- No block comments; no multi-line strings.
+- History-log growth is currently unbounded within a scope — no cap or
+  clear mechanism decided yet.
 
 ## Changelog
 
 
 | Activity | What changed in the language |
 |---|---|
-| Lab 1 | [entry] |
+| Lab 1 | Initial lexical structure, run contract, dynamically-typed requirement, and history-awareness design direction established. Keyword names left open. |
