@@ -40,38 +40,35 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 | Keyword | Purpose |
 |---|---|
-| [TBD] | variable declaration |
-| [TBD] | print/output statement |
-| [TBD] | if |
-| [TBD] | else |
-| [TBD] | while |
-| [TBD] | boolean literal — true |
-| [TBD] | boolean literal — false |
-| [TBD] | nil / absence-of-value literal |
-| [TBD] | function declaration |
-| [TBD] | return statement |
-| [TBD] | expose the execution-history record as a value (returns the log) |
-
+| var | variable declaration |
+| dmail | print/output statement |
+| div | if |
+| con | else |
+| leap | while |
+| true | boolean literal — true |
+| false | boolean literal — false |
+| null | nil / absence-of-value literal |
+| operation | function declaration |
+| elpsy | return statement |
+| readingsteiner | expose the execution-history record as a value (returns the log) |
+| and | and logical operator |
+| or | or logical operator |
+ q
 ### Operators
 
 
 | Operator | Category | Operands | Associativity | Precedence |
 |---|---|---|---|---|
 | `+` | arithmetic | binary | left | [TBD — set in Lab 2] |
-| `-` | arithmetic | binary | left | [TBD] |
-| `*` | arithmetic | binary | left | [TBD] |
-| `/` | arithmetic | binary | left | [TBD] |
-| `%` | arithmetic (modulo) | binary | left | [TBD] |
-| `=` | assignment | binary | right | [TBD] |
-| `==` | comparison | binary | left | [TBD] |
-| `!=` | comparison | binary | left | [TBD] |
-| `<` | comparison | binary | left | [TBD] |
-| `<=` | comparison | binary | left | [TBD] |
-| `>` | comparison | binary | left | [TBD] |
-| `>=` | comparison | binary | left | [TBD] |
-| `!` | logical (not) | unary | right | [TBD] |
-| `[` `]` | indexing (array/log access) | binary | left | [TBD] |
-| `.` | field access | binary | left | [TBD] |
+| `-` | arithmetic | binary | left | 5 |
+| `*` | arithmetic | binary | left | 6 |
+| `/` | arithmetic | binary | left | 6 |
+| `%` | arithmetic (modulo) | binary | left | 6 |
+| `=` | assignment | binary | right | 1 |
+| `== != < <= > >=` | comparison | binary | left | 4 |
+| `!` | logical (not) | unary | right | 7] |
+| `[` `]` | indexing (array/log access) | binary | left | 8 (tightest) |
+| `.` | field access | binary | left | 8 (tightest) |
 
 ### Literals
 
@@ -80,16 +77,16 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 |---|---|---|
 | number | `4`, `4.0` (integers and decimals; no leading-dot numbers, e.g. `.5` is invalid; a trailing dot with no following digit is its own token, so `3.toString` scans as NUMBER, DOT, IDENTIFIER) | numeric value |
 | string | `"hello"`, double-quoted, single-line only (no multi-line strings); supports `\n`, `\"`, `\\` escape sequences | string value (decoded — lexeme keeps the raw escaped text, literal holds the decoded characters) |
-| boolean | [TBD keyword] / [TBD keyword] | boolean value |
-| nil | [TBD keyword] | absence-of-value |
+| boolean | true / false | boolean value |
+| nil | null | absence-of-value |
 
 
 ### Identifiers
 
-- Start characters: [which]
-- Continue characters: [which]
-- Case-sensitive: [yes or no]
-- [Reserved patterns, length limits, or other restrictions.]
+- Start characters: letters (a-z, A-Z) and underscore (_)
+- Continue characters: letters, digits (0-9), and underscore (_)
+- Case-sensitive: yes
+- Reserved patterns, length limits, or other restrictions: none beyond the reserved keyword list
 
 ### Comments
 
