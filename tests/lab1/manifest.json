@@ -1,5 +1,5 @@
 {
-  "ext": ".go",
+  "ext": ".ama",
   "flag": "--tokenize",
   "mode": "sidecar"
 }
