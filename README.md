@@ -40,11 +40,11 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 
 | Keyword | Purpose |
 |---|---|
-| var | variable declaration |
+| res | variable declaration |
 | dmail | print/output statement |
 | div | if |
 | con | else |
-| leap | while |
+| timeleap | while |
 | true | boolean literal — true |
 | false | boolean literal — false |
 | null | nil / absence-of-value literal |
@@ -66,7 +66,7 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 | `%` | arithmetic (modulo) | binary | left | 6 |
 | `=` | assignment | binary | right | 1 |
 | `== != < <= > >=` | comparison | binary | left | 4 |
-| `!` | logical (not) | unary | right | 7] |
+| `!` | logical (not) | unary | right | 7 |
 | `[` `]` | indexing (array/log access) | binary | left | 8 (tightest) |
 | `.` | field access | binary | left | 8 (tightest) |
 
