@@ -3,25 +3,56 @@ package main
 import (
 	"fmt"
 	"os"
+	"unicode"
 )
 
-func fail(exitCode int, format string, arguments ...any) {
-	fmt.Fprintf(os.Stderr, "lab0: "+format+"\n", arguments...)
-	os.Exit(exitCode)
+// --- TOKEN TYPES & STRUCT ---
+
+type TokenType string
+
+const (
+	TokenTypeVAR        TokenType = "VAR"
+	TokenTypeIDENTIFIER TokenType = "IDENTIFIER"
+	TokenTypeEQUAL      TokenType = "EQUAL"
+	TokenTypeSTRING     TokenType = "STRING"
+	TokenTypePRINT      TokenType = "PRINT"
+	TokenTypeEOF        TokenType = "EOF"
+)
+
+type Token struct {
+	Type    TokenType
+	Lexeme  string
+	Literal any
+	Line    int
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fail(65, "expected one source-file path")
-	}
 
-	path := os.Args[1]
+
+func main() {
+	args := os.Args[1:]
+
+	if len(args) >= 2 && args[0] == "--tokenize" {
+		runFileTokenize(args[1])
+		return
+	}
+}
+
+func runFileTokenize(path string) {
 	source, err := os.ReadFile(path)
 	if err != nil {
-		fail(65, "cannot read '%s': %v", path, err)
+		fmt.Fprintf(os.Stderr, "lab1: cannot read '%s': %v\n", path, err)
+		os.Exit(65)
 	}
 
-	if _, err := os.Stdout.Write(source); err != nil {
-		fail(70, "cannot write output: %v", err)
+	scanner := NewScanner(string(source)) //Have yet to create the function
+	tokens, hasError := scanner.ScanTokens() //Have to make this too
+
+	// Exit code 65 on error with clean stdout
+	if hasError {
+		os.Exit(65)
+	}
+
+	for _, token := range tokens {
+		fmt.Println(token)
 	}
 }
