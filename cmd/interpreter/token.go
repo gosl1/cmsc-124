@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // TokenType categorizes a lexeme so downstream phases can switch on a
 // category instead of comparing raw strings.
 type TokenType string
@@ -38,6 +40,7 @@ const (
 	TokenTypeLEFT_BRACKET  TokenType = "LEFT_BRACKET"
 	TokenTypeRIGHT_BRACKET TokenType = "RIGHT_BRACKET"
 	TokenTypeDOT           TokenType = "DOT"
+  TokenTypeCOMMA         TokenType = "COMMA"
 
 	// literals
 	TokenTypeIDENTIFIER TokenType = "IDENTIFIER"
@@ -66,4 +69,13 @@ type Token struct {
 	Lexeme  string
 	Literal any
 	Line    int
+}
+
+func (t Token) String() string {
+	lit := "null"
+	if t.Literal != nil {
+		lit = fmt.Sprintf("%v", t.Literal)
+	}
+	return fmt.Sprintf("Token(type=%s, lexeme=%s, literal=%s, line=%d)",
+		t.Type, t.Lexeme, lit, t.Line)
 }

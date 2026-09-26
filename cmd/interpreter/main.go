@@ -13,7 +13,6 @@ func main() {
 		return
 	}
 
-	runREPL()
 }
 
 func runFileTokenize(path string) {
@@ -22,15 +21,15 @@ func runFileTokenize(path string) {
 		fmt.Fprintf(os.Stderr, "ama: cannot read '%s': %v\n", path, err)
 		os.Exit(65)
 	}
-
 	scanner := NewScanner(string(source))
-	tokens, hasError := scanner.ScanTokens()
 
-	if hasError {
+	tokens, failed := scanner.ScanTokens()
+
+	if failed {
 		os.Exit(65)
 	}
-
 	for _, token := range tokens {
 		fmt.Println(token)
 	}
+	os.Exit(0)
 }
