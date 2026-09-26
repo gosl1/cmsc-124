@@ -18,7 +18,7 @@ func main() {
 func runFileTokenize(path string) {
 	source, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "lab1: cannot read '%s': %v\n", path, err)
+		fmt.Fprintf(os.Stderr, "ama: cannot read '%s': %v\n", path, err)
 		os.Exit(65)
 	}
 	scanner := NewScanner(string(source))
