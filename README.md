@@ -27,7 +27,7 @@ Amadeus is a dynamically typed, general-purpose scripting language inspired by t
 | `./run` | [Starts the REPL.] |
 
 
-Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
+Exit codes: 0 on successful run, 65 on a static error, 70 on a runtime error.
 
 ## File extension
 
@@ -53,7 +53,7 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 | readingsteiner | expose the execution-history record as a value (returns the log) |
 | and | and logical operator |
 | or | or logical operator |
- q
+
 ### Operators
 
 
@@ -110,7 +110,7 @@ Exit codes: 0 on sucessful run, 65 on a static error, 70 on a runtime error.
 ## Token output format
 
 ```
-[TBD format name](type=[TBD], lexeme=[TBD], literal=[TBD], line=1)
+Token(type=VAR,lexeme=var,literal=null,line=1)
 ```
 
 Fields, left to right: token type (category, e.g. NUMBER), the lexeme (raw
