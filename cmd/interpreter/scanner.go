@@ -1,11 +1,18 @@
 package main
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Scanner struct {
 	source  string
 	tokens  []Token
 	start   int
 	current int
 	line    int
+
+	hadError bool
 }
 
 // keywords maps each themed lexeme to its token type.
@@ -40,8 +47,7 @@ func (s *Scanner) ScanTokens() ([]Token, bool) {
 		s.scanToken()
 	}
 	s.tokens = append(s.tokens, Token{Type: EOF, Lexeme: "", Literal: nil, Line: s.line})
-	//Ethan go SETUP ERROR//
-	return s.tokens, false
+	return s.tokens, s.hadError
 }
 
 func (s *Scanner) scanToken() {
@@ -70,6 +76,8 @@ func (s *Scanner) scanToken() {
 		s.addToken(STAR, nil)
 	case '%':
 		s.addToken(PERCENT, nil)
+	case ',':
+		s.addToken(COMMA, nil)
 	case '=':
 		if s.match('=') {
 			s.addToken(EQUAL_EQUAL, nil)
@@ -106,16 +114,23 @@ func (s *Scanner) scanToken() {
 
 	// whitespace
 	case ' ', '\t', '\r':
-    // discard, emit nothing
+    	// discard, emit nothing
 
 	// increment s.line when emcountering new line character
 	case '\n':
     	s.line++
+
+	case '"':
+		s.stringLiteral()
 	
 	//case '/':
 	default:
-		if isAlpha(c) {
+		if isDigit(c) {
+			s.number()
+		} else if isAlpha(c) {
 			s.identifier()
+		} else {
+			s.reportError(s.line, fmt.Sprintf("Unexpected character '%c'.", c))
 		}
 	}
 }
@@ -143,6 +158,16 @@ func (s *Scanner) peek() byte {
 	return s.source[s.current]
 }
 
+// looks two characters ahead of the consumed character.
+// peekNext looks one character further than peek — needed to decide
+// whether a "." after digits is a decimal point or its own token.
+func (s *Scanner) peekNext() byte {
+	if s.current+1 >= len(s.source) {
+		return 0
+	}
+	return s.source[s.current+1]
+}
+
 // match is peek plus a conditional advance: consumes the expected
 // character only if it's actually there. This is what lets "=" and
 // "==" be told apart with one character of lookahead.
@@ -167,6 +192,59 @@ func (s *Scanner) identifier() {
 		tokType = IDENTIFIER
 	}
 	s.addToken(tokType, nil)
+}
+
+func (s *Scanner) number() {
+	for isDigit(s.peek()) {
+		s.advance()
+	}
+	if s.peek() == '.' && isDigit(s.peekNext()) {
+		s.advance()
+		for isDigit(s.peek()) {
+			s.advance()
+		}
+	}
+	text := s.source[s.start:s.current]
+	value, err := strconv.ParseFloat(text, 64)
+	if err != nil {
+		s.reportError(s.line, fmt.Sprintf("Malformed number '%s'.", text))
+		return
+	}
+	s.addToken(NUMBER, value)
+}
+
+func (s *Scanner) stringLiteral() {
+	var value []byte
+ 
+	for s.peek() != '"' && !s.isAtEnd() && s.peek() != '\n' {
+		if s.peek() == '\\' {
+			s.advance() // consume the backslash
+			if s.isAtEnd() {
+				break
+			}
+			escaped := s.advance()
+			switch escaped {
+			case 'n':
+				value = append(value, '\n')
+			case '"':
+				value = append(value, '"')
+			case '\\':
+				value = append(value, '\\')
+			default:
+				s.reportError(s.line, fmt.Sprintf("Invalid escape sequence '\\%c'.", escaped))
+			}
+			continue
+		}
+		value = append(value, s.advance())
+	}
+ 
+	if s.isAtEnd() || s.peek() == '\n' {
+		s.reportError(s.line, "Unterminated string.")
+		return
+	}
+ 
+	s.advance() // consume the closing "
+	s.addToken(STRING, string(value))
 }
 
 func isAlpha(c byte) bool {
