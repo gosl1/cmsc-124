@@ -8,6 +8,23 @@ type Scanner struct {
 	line    int
 }
 
+// keywords maps each themed lexeme to its token type.
+var keywords = map[string]TokenType{
+	"res":            RES,
+	"dmail":          DMAIL,
+	"div":            DIV,
+	"con":            CON,
+	"timeleap":       TIMELEAP,
+	"operation":      OPERATION,
+	"elpsy":          ELPSY,
+	"readingsteiner": READINGSTEINER,
+	"true":           TRUE,
+	"false":          FALSE,
+	"null":           NULL,
+	"and":            AND,
+	"or":             OR,
+}
+
 func NewScanner(source string) *Scanner {
 	//Gives a pointer to Scanner and creates the variable implicitly
 	return &Scanner{
@@ -97,6 +114,9 @@ func (s *Scanner) scanToken() {
 	
 	//case '/':
 	default:
+		if isAlpha(c) {
+			s.identifier()
+		}
 	}
 }
 func (s *Scanner) isAtEnd() bool {
@@ -132,4 +152,31 @@ func (s *Scanner) match(expected byte) bool {
 	}
 	s.current++
 	return true
+}
+
+// identifier consumes the WHOLE run of identifier characters first
+// (maximal munch), then does ONE table lookup on the finished text.
+// A match means keyword; no match means a plain identifier.
+func (s *Scanner) identifier() {
+	for isAlphaNumeric(s.peek()) {
+		s.advance()
+	}
+	text := s.source[s.start:s.current]
+	tokType, ok := keywords[text]
+	if !ok {
+		tokType = IDENTIFIER
+	}
+	s.addToken(tokType, nil)
+}
+
+func isAlpha(c byte) bool {
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+}
+
+func isDigit(c byte) bool {
+	return c >= '0' && c <= '9'
+}
+
+func isAlphaNumeric(c byte) bool {
+	return isAlpha(c) || isDigit(c)
 }
