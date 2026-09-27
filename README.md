@@ -54,6 +54,7 @@ Exit codes: 0 on successful run, 65 on a static error, 70 on a runtime error.
 | and | and logical operator |
 | or | or logical operator |
 
+
 ### Operators
 
 
@@ -110,7 +111,7 @@ Exit codes: 0 on successful run, 65 on a static error, 70 on a runtime error.
 ## Token output format
 
 ```
-Token(type=VAR,lexeme=var,literal=null,line=1)
+[TBD format name](type=[TBD], lexeme=[TBD], literal=[TBD], line=1)
 ```
 
 Fields, left to right: token type (category, e.g. NUMBER), the lexeme (raw
