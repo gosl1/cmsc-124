@@ -53,6 +53,48 @@ func (s *Scanner) scanToken() {
 		s.addToken(STAR, nil)
 	case '%':
 		s.addToken(PERCENT, nil)
+	case '=':
+		if s.match('=') {
+			s.addToken(EQUAL_EQUAL, nil)
+		} else {
+			s.addToken(EQUAL, nil)
+		}
+	case '!':
+		if s.match('=') {
+			s.addToken(BANG_EQUAL, nil)
+		} else {
+			s.addToken(BANG, nil)
+		}
+	case '<':
+		if s.match('=') {
+			s.addToken(LESS_EQUAL, nil)
+		} else {
+			s.addToken(LESS, nil)
+		}
+	case '>':
+		if s.match('=') {
+			s.addToken(GREATER_EQUAL, nil)
+		} else {
+			s.addToken(GREATER, nil)
+		}
+	case '/':
+		if s.match('/') {
+			// Line comment: scanned and discarded, runs to end of line.
+			for s.peek() != '\n' && !s.isAtEnd() {
+				s.advance()
+			}
+		} else {
+			s.addToken(SLASH, nil)
+		}
+
+	// whitespace
+	case ' ', '\t', '\r':
+		// discard, emit nothing
+
+	// increment s.line when emcountering new line character
+	case '\n':
+		s.line++
+
 	//case '/':
 	default:
 	}
@@ -79,4 +121,15 @@ func (s *Scanner) peek() byte {
 		return 0
 	}
 	return s.source[s.current]
+}
+
+// match is peek plus a conditional advance: consumes the expected
+// character only if it's actually there. This is what lets "=" and
+// "==" be told apart with one character of lookahead.
+func (s *Scanner) match(expected byte) bool {
+	if s.isAtEnd() || s.source[s.current] != expected {
+		return false
+	}
+	s.current++
+	return true
 }

@@ -1,0 +1,4 @@
+res x = 5 // declare x
+// a full line comment on its own
+res y = 10
+// trailing comment, no newline follows this line
